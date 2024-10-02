@@ -1,0 +1,13 @@
+C:\Users\CSoftware\Desktop\Ciber Control\ADMINISTRADOR\Servidor\obj\x86\Debug\Servidor.vbproj.AssemblyReference.cache
+C:\Users\CSoftware\Desktop\Ciber Control\ADMINISTRADOR\Servidor\obj\x86\Debug\Servidor.Main.resources
+C:\Users\CSoftware\Desktop\Ciber Control\ADMINISTRADOR\Servidor\obj\x86\Debug\Servidor.RegPC.resources
+C:\Users\CSoftware\Desktop\Ciber Control\ADMINISTRADOR\Servidor\obj\x86\Debug\Servidor.Resources.resources
+C:\Users\CSoftware\Desktop\Ciber Control\ADMINISTRADOR\Servidor\obj\x86\Debug\Servidor.vbproj.GenerateResource.cache
+C:\Users\CSoftware\Desktop\Ciber Control\ADMINISTRADOR\Servidor\obj\x86\Debug\Servidor.vbproj.CoreCompileInputs.cache
+C:\Users\CSoftware\Desktop\Ciber Control\ADMINISTRADOR\Servidor\bin\Debug\Servidor.exe.config
+C:\Users\CSoftware\Desktop\Ciber Control\ADMINISTRADOR\Servidor\bin\Debug\Servidor.exe
+C:\Users\CSoftware\Desktop\Ciber Control\ADMINISTRADOR\Servidor\bin\Debug\Servidor.pdb
+C:\Users\CSoftware\Desktop\Ciber Control\ADMINISTRADOR\Servidor\bin\Debug\Servidor.xml
+C:\Users\CSoftware\Desktop\Ciber Control\ADMINISTRADOR\Servidor\obj\x86\Debug\Servidor.exe
+C:\Users\CSoftware\Desktop\Ciber Control\ADMINISTRADOR\Servidor\obj\x86\Debug\Servidor.xml
+C:\Users\CSoftware\Desktop\Ciber Control\ADMINISTRADOR\Servidor\obj\x86\Debug\Servidor.pdb

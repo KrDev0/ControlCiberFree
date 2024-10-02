@@ -1,0 +1,15 @@
+C:\Users\CSoftware\Desktop\Ciber Control\ADMINISTRADOR\Cliente\obj\x86\Debug\Cliente.vbproj.AssemblyReference.cache
+C:\Users\CSoftware\Desktop\Ciber Control\ADMINISTRADOR\Cliente\obj\x86\Debug\Cliente.PantallaBlo.resources
+C:\Users\CSoftware\Desktop\Ciber Control\ADMINISTRADOR\Cliente\obj\x86\Debug\Cliente.Config.resources
+C:\Users\CSoftware\Desktop\Ciber Control\ADMINISTRADOR\Cliente\obj\x86\Debug\Cliente.Mensaje.resources
+C:\Users\CSoftware\Desktop\Ciber Control\ADMINISTRADOR\Cliente\obj\x86\Debug\Cliente.Resources.resources
+C:\Users\CSoftware\Desktop\Ciber Control\ADMINISTRADOR\Cliente\obj\x86\Debug\Cliente.TiempoServ.resources
+C:\Users\CSoftware\Desktop\Ciber Control\ADMINISTRADOR\Cliente\obj\x86\Debug\Cliente.vbproj.GenerateResource.cache
+C:\Users\CSoftware\Desktop\Ciber Control\ADMINISTRADOR\Cliente\obj\x86\Debug\Cliente.vbproj.CoreCompileInputs.cache
+C:\Users\CSoftware\Desktop\Ciber Control\ADMINISTRADOR\Servidor\bin\Debug\Cliente.exe.config
+C:\Users\CSoftware\Desktop\Ciber Control\ADMINISTRADOR\Servidor\bin\Debug\Cliente.exe
+C:\Users\CSoftware\Desktop\Ciber Control\ADMINISTRADOR\Servidor\bin\Debug\Cliente.pdb
+C:\Users\CSoftware\Desktop\Ciber Control\ADMINISTRADOR\Servidor\bin\Debug\Cliente.xml
+C:\Users\CSoftware\Desktop\Ciber Control\ADMINISTRADOR\Cliente\obj\x86\Debug\Cliente.exe
+C:\Users\CSoftware\Desktop\Ciber Control\ADMINISTRADOR\Cliente\obj\x86\Debug\Cliente.xml
+C:\Users\CSoftware\Desktop\Ciber Control\ADMINISTRADOR\Cliente\obj\x86\Debug\Cliente.pdb
