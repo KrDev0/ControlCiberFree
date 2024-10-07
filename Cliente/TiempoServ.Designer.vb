@@ -23,6 +23,7 @@ Partial Class TiempoServ
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(TiempoServ))
         Me.TimerSEGUNDOS = New System.Windows.Forms.Timer(Me.components)
         Me.LabelACTUAL = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -30,6 +31,7 @@ Partial Class TiempoServ
         Me.LabelINICIO = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.LabelLIMITE = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'TimerSEGUNDOS
@@ -39,7 +41,7 @@ Partial Class TiempoServ
         '
         Me.LabelACTUAL.AutoSize = True
         Me.LabelACTUAL.ForeColor = System.Drawing.Color.Black
-        Me.LabelACTUAL.Location = New System.Drawing.Point(122, 9)
+        Me.LabelACTUAL.Location = New System.Drawing.Point(120, 9)
         Me.LabelACTUAL.Name = "LabelACTUAL"
         Me.LabelACTUAL.Size = New System.Drawing.Size(19, 16)
         Me.LabelACTUAL.TabIndex = 0
@@ -69,7 +71,7 @@ Partial Class TiempoServ
         '
         Me.LabelINICIO.AutoSize = True
         Me.LabelINICIO.ForeColor = System.Drawing.Color.Black
-        Me.LabelINICIO.Location = New System.Drawing.Point(122, 34)
+        Me.LabelINICIO.Location = New System.Drawing.Point(120, 34)
         Me.LabelINICIO.Name = "LabelINICIO"
         Me.LabelINICIO.Size = New System.Drawing.Size(19, 16)
         Me.LabelINICIO.TabIndex = 2
@@ -89,19 +91,30 @@ Partial Class TiempoServ
         '
         Me.LabelLIMITE.AutoSize = True
         Me.LabelLIMITE.ForeColor = System.Drawing.Color.Red
-        Me.LabelLIMITE.Location = New System.Drawing.Point(122, 59)
+        Me.LabelLIMITE.Location = New System.Drawing.Point(120, 59)
         Me.LabelLIMITE.Name = "LabelLIMITE"
         Me.LabelLIMITE.Size = New System.Drawing.Size(19, 16)
         Me.LabelLIMITE.TabIndex = 4
         Me.LabelLIMITE.Text = " 0"
         '
-        'SERVICIO
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.ForeColor = System.Drawing.Color.Black
+        Me.Label4.Location = New System.Drawing.Point(78, 84)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(98, 13)
+        Me.Label4.TabIndex = 6
+        Me.Label4.Text = "www.krsolution.site"
+        '
+        'TiempoServ
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(222, 85)
-        Me.ControlBox = False
+        Me.ClientSize = New System.Drawing.Size(254, 106)
+        Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.LabelLIMITE)
         Me.Controls.Add(Me.Label2)
@@ -111,12 +124,11 @@ Partial Class TiempoServ
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ForeColor = System.Drawing.Color.Yellow
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
-        Me.MinimizeBox = False
-        Me.Name = "SERVICIO"
-        Me.ShowIcon = False
-        Me.ShowInTaskbar = False
+        Me.Name = "TiempoServ"
+        Me.Opacity = 0.9R
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Control de tiempo"
         Me.ResumeLayout(False)
@@ -130,4 +142,5 @@ Partial Class TiempoServ
     Friend WithEvents LabelINICIO As System.Windows.Forms.Label
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents LabelLIMITE As System.Windows.Forms.Label
+    Friend WithEvents Label4 As Label
 End Class

@@ -23,5 +23,17 @@
     <Setting Name="ipPC7" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="ipPC8" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ipPC9" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ipPC10" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="puerto" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">55555</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

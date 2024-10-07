@@ -15,7 +15,7 @@ Option Explicit On
 Namespace My
     
     <Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
-     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.5.0.0"),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.11.0.0"),  _
      Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
     Partial Friend NotInheritable Class MySettings
         Inherits Global.System.Configuration.ApplicationSettingsBase
@@ -52,6 +52,78 @@ Namespace My
 #End If
                 Return defaultInstance
             End Get
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("102250")>  _
+        Public Property adminPass() As String
+            Get
+                Return CType(Me("adminPass"),String)
+            End Get
+            Set
+                Me("adminPass") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property puerto() As String
+            Get
+                Return CType(Me("puerto"),String)
+            End Get
+            Set
+                Me("puerto") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("5")>  _
+        Public Property tiempoMensaje() As Integer
+            Get
+                Return CType(Me("tiempoMensaje"),Integer)
+            End Get
+            Set
+                Me("tiempoMensaje") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("5")>  _
+        Public Property tiempoPreaviso() As Integer
+            Get
+                Return CType(Me("tiempoPreaviso"),Integer)
+            End Get
+            Set
+                Me("tiempoPreaviso") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Nombre ciber")>  _
+        Public Property nombreCiber() As String
+            Get
+                Return CType(Me("nombreCiber"),String)
+            End Get
+            Set
+                Me("nombreCiber") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property ipServidor() As String
+            Get
+                Return CType(Me("ipServidor"),String)
+            End Get
+            Set
+                Me("ipServidor") = value
+            End Set
         End Property
     End Class
 End Namespace

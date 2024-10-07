@@ -22,6 +22,7 @@ Partial Class Mensaje
     'No lo modifique con el editor de código.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Mensaje))
         Me.TextBoxMENSAJES = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
@@ -41,14 +42,15 @@ Partial Class Mensaje
         '
         Me.Label1.AutoSize = True
         Me.Label1.BackColor = System.Drawing.Color.Transparent
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.Black
         Me.Label1.Location = New System.Drawing.Point(13, 13)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(159, 16)
+        Me.Label1.Size = New System.Drawing.Size(198, 21)
         Me.Label1.TabIndex = 1
-        Me.Label1.Text = "El Administrador dice:"
+        Me.Label1.Text = "Mensaje del administrador:"
         '
-        'MENSAJES
+        'Mensaje
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -59,14 +61,13 @@ Partial Class Mensaje
         Me.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ForeColor = System.Drawing.Color.Aqua
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "MENSAJES"
-        Me.ShowIcon = False
-        Me.ShowInTaskbar = False
+        Me.Name = "Mensaje"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "MENSAJES"
+        Me.Text = "Control de Cyber"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
