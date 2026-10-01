@@ -23,9 +23,15 @@ Partial Class pantallaEquipo
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(pantallaEquipo))
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.TimerRecibir = New System.Windows.Forms.Timer(Me.components)
+        Me.lblStatus = New System.Windows.Forms.Label()
+        Me.topCalidad = New System.Windows.Forms.Panel()
+        Me.lblCalidad = New System.Windows.Forms.Label()
+        Me.cboCalidad = New System.Windows.Forms.ComboBox()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.topCalidad.SuspendLayout()
         Me.SuspendLayout()
         '
         'PictureBox1
@@ -33,15 +39,64 @@ Partial Class pantallaEquipo
         Me.PictureBox1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PictureBox1.Location = New System.Drawing.Point(0, 0)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(800, 450)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PictureBox1.Size = New System.Drawing.Size(800, 420)
+        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.PictureBox1.TabIndex = 0
         Me.PictureBox1.TabStop = False
         '
         'TimerRecibir
         '
-        Me.TimerRecibir.Enabled = True
         Me.TimerRecibir.Interval = 5000
+        '
+        'lblStatus
+        '
+        Me.lblStatus.BackColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(41, Byte), Integer), CType(CType(55, Byte), Integer))
+        Me.lblStatus.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.lblStatus.Font = New System.Drawing.Font("Segoe UI", 10.0!)
+        Me.lblStatus.ForeColor = System.Drawing.Color.White
+        Me.lblStatus.Location = New System.Drawing.Point(0, 420)
+        Me.lblStatus.Name = "lblStatus"
+        Me.lblStatus.Padding = New System.Windows.Forms.Padding(10, 0, 0, 0)
+        Me.lblStatus.Size = New System.Drawing.Size(800, 30)
+        Me.lblStatus.TabIndex = 1
+        Me.lblStatus.Text = "Conectando..."
+        Me.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'topCalidad
+        '
+        Me.topCalidad.BackColor = System.Drawing.Color.White
+        Me.topCalidad.Controls.Add(Me.cboCalidad)
+        Me.topCalidad.Controls.Add(Me.lblCalidad)
+        Me.topCalidad.Dock = System.Windows.Forms.DockStyle.Top
+        Me.topCalidad.Location = New System.Drawing.Point(0, 0)
+        Me.topCalidad.Name = "topCalidad"
+        Me.topCalidad.Padding = New System.Windows.Forms.Padding(10, 6, 10, 6)
+        Me.topCalidad.Size = New System.Drawing.Size(800, 40)
+        Me.topCalidad.TabIndex = 2
+        '
+        'lblCalidad
+        '
+        Me.lblCalidad.AutoSize = True
+        Me.lblCalidad.Dock = System.Windows.Forms.DockStyle.Left
+        Me.lblCalidad.Font = New System.Drawing.Font("Segoe UI", 10.0!)
+        Me.lblCalidad.Location = New System.Drawing.Point(10, 6)
+        Me.lblCalidad.Name = "lblCalidad"
+        Me.lblCalidad.Padding = New System.Windows.Forms.Padding(0, 4, 8, 0)
+        Me.lblCalidad.Size = New System.Drawing.Size(66, 24)
+        Me.lblCalidad.TabIndex = 0
+        Me.lblCalidad.Text = "Calidad:"
+        '
+        'cboCalidad
+        '
+        Me.cboCalidad.Dock = System.Windows.Forms.DockStyle.Left
+        Me.cboCalidad.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboCalidad.Font = New System.Drawing.Font("Segoe UI", 10.0!)
+        Me.cboCalidad.FormattingEnabled = True
+        Me.cboCalidad.Items.AddRange(New Object() {"Baja 640", "Media 960", "Alta 1280", "Muy alta 1600"})
+        Me.cboCalidad.Location = New System.Drawing.Point(76, 6)
+        Me.cboCalidad.Name = "cboCalidad"
+        Me.cboCalidad.Size = New System.Drawing.Size(150, 25)
+        Me.cboCalidad.TabIndex = 1
         '
         'pantallaEquipo
         '
@@ -49,13 +104,22 @@ Partial Class pantallaEquipo
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 450)
         Me.Controls.Add(Me.PictureBox1)
+        Me.Controls.Add(Me.lblStatus)
+        Me.Controls.Add(Me.topCalidad)
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "pantallaEquipo"
         Me.Text = "pantallaEquipo"
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.topCalidad.ResumeLayout(False)
+        Me.topCalidad.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
 
     Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents TimerRecibir As Timer
+    Friend WithEvents lblStatus As Label
+    Friend WithEvents topCalidad As Panel
+    Friend WithEvents lblCalidad As Label
+    Friend WithEvents cboCalidad As ComboBox
 End Class

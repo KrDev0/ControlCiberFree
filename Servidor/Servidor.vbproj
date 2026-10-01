@@ -78,28 +78,44 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CiberControl.Designer.vb">
-      <DependentUpon>CiberControl.vb</DependentUpon>
-    </Compile>
-    <Compile Include="CiberControl.vb">
+    <Compile Include="Data\Db.vb" />
+    <Compile Include="Net\NetProtocol.vb" />
+    <Compile Include="Theme.vb" />
+    <Compile Include="UI\Dashboard.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Main.Designer.vb">
-      <DependentUpon>Main.vb</DependentUpon>
+    <Compile Include="UI\Dashboard.Designer.vb">
+      <DependentUpon>Dashboard.vb</DependentUpon>
     </Compile>
-    <Compile Include="Main.vb">
-      <SubType>Form</SubType>
+    <Compile Include="UI\EquipoCard.vb">
+      <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UI\EquipoCard.Designer.vb">
+      <DependentUpon>EquipoCard.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\PosControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\PosControl.Designer.vb">
+      <DependentUpon>PosControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ProductosControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\ProductosControl.Designer.vb">
+      <DependentUpon>ProductosControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\HistorialControl.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\HistorialControl.Designer.vb">
+      <DependentUpon>HistorialControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ScreenHub.vb" />
     <Compile Include="pantallaEquipo.Designer.vb">
       <DependentUpon>pantallaEquipo.vb</DependentUpon>
     </Compile>
     <Compile Include="pantallaEquipo.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="RegPC.Designer.vb">
-      <DependentUpon>RegPC.vb</DependentUpon>
-    </Compile>
-    <Compile Include="RegPC.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -120,23 +136,26 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="CiberControl.resx">
-      <DependentUpon>CiberControl.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Main.resx">
-      <DependentUpon>Main.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="pantallaEquipo.resx">
       <DependentUpon>pantallaEquipo.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="RegPC.resx">
-      <DependentUpon>RegPC.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dashboard.resx">
+      <DependentUpon>Dashboard.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\HistorialControl.resx">
+      <DependentUpon>HistorialControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\PosControl.resx">
+      <DependentUpon>PosControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ProductosControl.resx">
+      <DependentUpon>ProductosControl.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -153,6 +172,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon32.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.7" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
