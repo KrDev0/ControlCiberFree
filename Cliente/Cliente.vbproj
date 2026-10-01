@@ -8,7 +8,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{BE7D3CBF-463B-4F3F-BC7F-6BDF48A190EF}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>Cliente.My.MyApplication</StartupObject>
+    <StartupObject>Cliente.Arranque</StartupObject>
     <RootNamespace>Cliente</RootNamespace>
     <AssemblyName>Cliente</AssemblyName>
     <FileAlignment>512</FileAlignment>
@@ -49,7 +49,7 @@
     <DefineDebug>false</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
-    <OutputPath>..\Servidor\bin\Release\</OutputPath>
+    <OutputPath>..\Salida\</OutputPath>
     <DocumentationFile>Cliente.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <Prefer32Bit>false</Prefer32Bit>
@@ -111,25 +111,16 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ingresarContrasena.Designer.vb">
-      <DependentUpon>ingresarContrasena.vb</DependentUpon>
-    </Compile>
-    <Compile Include="ingresarContrasena.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="PantallaBlo.Designer.vb">
       <DependentUpon>PantallaBlo.vb</DependentUpon>
     </Compile>
     <Compile Include="PantallaBlo.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Config.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Config.Designer.vb">
-      <DependentUpon>Config.vb</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Seguridad\Crypto.vb" />
+    <Compile Include="Seguridad\ClienteCfg.vb" />
+    <Compile Include="MotorCliente.vb" />
+    <Compile Include="Arranque.vb" />
     <Compile Include="Mensaje.Designer.vb">
       <DependentUpon>Mensaje.vb</DependentUpon>
     </Compile>
@@ -160,14 +151,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ingresarContrasena.resx">
-      <DependentUpon>ingresarContrasena.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="PantallaBlo.resx">
       <DependentUpon>PantallaBlo.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Config.resx">
-      <DependentUpon>Config.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Mensaje.resx">
       <DependentUpon>Mensaje.vb</DependentUpon>

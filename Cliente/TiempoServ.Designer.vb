@@ -32,6 +32,7 @@ Partial Class TiempoServ
         Me.Label3 = New System.Windows.Forms.Label()
         Me.LabelLIMITE = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
+        Me.LabelRestante = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'TimerSEGUNDOS
@@ -102,18 +103,30 @@ Partial Class TiempoServ
         Me.Label4.AutoSize = True
         Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label4.ForeColor = System.Drawing.Color.Black
-        Me.Label4.Location = New System.Drawing.Point(78, 84)
+        Me.Label4.Location = New System.Drawing.Point(78, 118)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(98, 13)
+        Me.Label4.Size = New System.Drawing.Size(106, 13)
         Me.Label4.TabIndex = 6
-        Me.Label4.Text = "www.krsolution.site"
+        Me.Label4.Text = "Control de Ciber v3.0"
+        '
+        'LabelRestante
+        '
+        Me.LabelRestante.AutoSize = True
+        Me.LabelRestante.Font = New System.Drawing.Font("Segoe UI", 14.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelRestante.ForeColor = System.Drawing.Color.Green
+        Me.LabelRestante.Location = New System.Drawing.Point(12, 82)
+        Me.LabelRestante.Name = "LabelRestante"
+        Me.LabelRestante.Size = New System.Drawing.Size(70, 25)
+        Me.LabelRestante.TabIndex = 7
+        Me.LabelRestante.Text = "--:--:--"
         '
         'TiempoServ
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(254, 106)
+        Me.ClientSize = New System.Drawing.Size(254, 140)
+        Me.Controls.Add(Me.LabelRestante)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.LabelLIMITE)
@@ -143,4 +156,5 @@ Partial Class TiempoServ
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents LabelLIMITE As System.Windows.Forms.Label
     Friend WithEvents Label4 As Label
+    Friend WithEvents LabelRestante As Label
 End Class

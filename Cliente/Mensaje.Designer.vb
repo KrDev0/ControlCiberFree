@@ -67,7 +67,7 @@ Partial Class Mensaje
         Me.MinimizeBox = False
         Me.Name = "Mensaje"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Control de Cyber"
+        Me.Text = "Control de Ciber"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

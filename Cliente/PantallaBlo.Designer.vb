@@ -115,7 +115,7 @@ Partial Class PantallaBlo
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(459, 13)
         Me.Label2.TabIndex = 1
-        Me.Label2.Text = "Desarrollado por: KrDev - www.krsolution.site"
+        Me.Label2.Text = "Desarrollado por KrDev"
         Me.Label2.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'lblNombreCiber
@@ -164,7 +164,7 @@ Partial Class PantallaBlo
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(35, 19)
         Me.Label5.TabIndex = 4
-        Me.Label5.Text = "v2.0"
+        Me.Label5.Text = "v3.0"
         Me.Label5.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'Label3
