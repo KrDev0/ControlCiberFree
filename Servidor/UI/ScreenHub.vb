@@ -26,6 +26,10 @@ Public Module ScreenHub
     Private _subs As New Dictionary(Of String, Action(Of Byte()))()
     Private _bufs As New Dictionary(Of String, FrameBuf)()
     Private _seen As New Dictionary(Of String, DateTime)()
+    Private _estadoBloqueado As New Dictionary(Of String, Boolean)()
+
+    Public Event EstadoClienteRecibido(ip As String, bloqueado As Boolean)
+    Public Event SesionClientePausada(ip As String, inicio As DateTime, fin As DateTime, pausaDesde As DateTime)
 
     Public Sub Ensure(puerto As Integer)
         SyncLock _lock
@@ -68,6 +72,14 @@ Public Module ScreenHub
         End SyncLock
     End Function
 
+    Public Function EstadoBloqueo(ip As String) As Nullable(Of Boolean)
+        SyncLock _lock
+            Dim valor As Boolean
+            If _estadoBloqueado.TryGetValue(If(ip, "").Trim(), valor) Then Return New Nullable(Of Boolean)(valor)
+            Return Nothing
+        End SyncLock
+    End Function
+
     Private Sub LoopRecibir(tok As CancellationToken)
         Dim ep As New IPEndPoint(IPAddress.Any, _port)
         While Not tok.IsCancellationRequested
@@ -78,6 +90,31 @@ Public Module ScreenHub
                 SyncLock _lock
                     _seen(fromIp) = DateTime.Now
                 End SyncLock
+                Dim mensaje As String = Encoding.UTF8.GetString(datos).Trim()
+                If mensaje.StartsWith("ESTADO:", StringComparison.OrdinalIgnoreCase) Then
+                    Dim partes As String() = mensaje.Split(":"c)
+                    Dim estado As String = If(partes.Length > 1, partes(1).Trim().ToUpperInvariant(), "")
+                    If estado = "BLOQUEADO" OrElse estado = "EN_USO" Then
+                        Dim bloqueado As Boolean = estado = "BLOQUEADO"
+                        SyncLock _lock
+                            _estadoBloqueado(fromIp) = bloqueado
+                        End SyncLock
+                        Try : RaiseEvent EstadoClienteRecibido(fromIp, bloqueado) : Catch : End Try
+                    ElseIf estado = "PAUSADO" AndAlso partes.Length >= 5 Then
+                        Dim inicioTicks, finTicks, pausaTicks As Long
+                        If Long.TryParse(partes(2), inicioTicks) AndAlso Long.TryParse(partes(3), finTicks) AndAlso Long.TryParse(partes(4), pausaTicks) Then
+                            Dim inicio As New DateTime(inicioTicks)
+                            Dim fin As DateTime = If(finTicks = DateTime.MinValue.Ticks, DateTime.MinValue, New DateTime(finTicks))
+                            Dim pausaDesde As New DateTime(pausaTicks)
+                            SyncLock _lock
+                                _estadoBloqueado(fromIp) = True
+                            End SyncLock
+                            Try : RaiseEvent SesionClientePausada(fromIp, inicio, fin, pausaDesde) : Catch : End Try
+                            Try : RaiseEvent EstadoClienteRecibido(fromIp, True) : Catch : End Try
+                        End If
+                    End If
+                    Continue While
+                End If
                 Dim cb As Action(Of Byte()) = Nothing
                 SyncLock _lock
                     If Not _subs.TryGetValue(fromIp, cb) Then Continue While

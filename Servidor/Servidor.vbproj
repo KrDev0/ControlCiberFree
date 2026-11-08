@@ -57,6 +57,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -80,6 +81,7 @@
   <ItemGroup>
     <Compile Include="Data\Db.vb" />
     <Compile Include="Net\NetProtocol.vb" />
+    <Compile Include="Net\Actualizador.vb" />
     <Compile Include="Theme.vb" />
     <Compile Include="UI\Dashboard.vb">
       <SubType>Form</SubType>
@@ -110,6 +112,12 @@
     </Compile>
     <Compile Include="UI\HistorialControl.Designer.vb">
       <DependentUpon>HistorialControl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\TerminosForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\TerminosForm.Designer.vb">
+      <DependentUpon>TerminosForm.vb</DependentUpon>
     </Compile>
     <Compile Include="UI\ScreenHub.vb" />
     <Compile Include="pantallaEquipo.Designer.vb">

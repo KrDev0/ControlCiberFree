@@ -1,0 +1,18 @@
+# Visual Studio and generated build files
+**/.vs/
+**/bin/
+**/obj/
+BuildCheck/
+
+# Local data and diagnostics (never publish operating data)
+**/ciber.db
+**/cliente.cfg
+**/cliente.log
+**/ciber_error.log
+**/*.pdb
+Salida/*.xml
+Salida/vs*.tmp
+
+# Local assistant notes
+AGENTS.md
+MEMORY.md

@@ -50,11 +50,11 @@ Partial Class HistorialControl
         'lblTotal
         '
         Me.lblTotal.Dock = System.Windows.Forms.DockStyle.Right
-        Me.lblTotal.Font = New System.Drawing.Font("Segoe UI", 14.0!, System.Drawing.FontStyle.Bold)
+        Me.lblTotal.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold)
         Me.lblTotal.ForeColor = System.Drawing.Color.FromArgb(CType(CType(39, Byte), Integer), CType(CType(174, Byte), Integer), CType(CType(96, Byte), Integer))
-        Me.lblTotal.Location = New System.Drawing.Point(610, 10)
+        Me.lblTotal.Location = New System.Drawing.Point(510, 5)
         Me.lblTotal.Name = "lblTotal"
-        Me.lblTotal.Size = New System.Drawing.Size(280, 40)
+        Me.lblTotal.Size = New System.Drawing.Size(380, 50)
         Me.lblTotal.TabIndex = 5
         Me.lblTotal.Text = "Total: $0.00"
         Me.lblTotal.TextAlign = System.Drawing.ContentAlignment.MiddleRight

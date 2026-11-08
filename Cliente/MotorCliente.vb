@@ -10,11 +10,16 @@ Imports System.IO
 ''' </summary>
 Public Class MotorCliente
     Private ORDENADOR As UdpClient
+    Private _envio As UdpClient
     Private MIARRAY As String()
     Private HORAINICIO As DateTime
     Public HORALIMITE As DateTime = DateTime.MinValue
     Private AVISADO As Boolean = False
     Private _ultimoServidor As String = ""
+    Private _ultimoPingServidor As DateTime = DateTime.MinValue
+    Private _fondoTotal As Integer = -1
+    Private _fondoPartes As New Dictionary(Of Integer, Byte())()
+    Private _fondoT0 As DateTime = DateTime.MinValue
 
     ''' <summary>Instancia vigente (la crea Arranque). Permite leer el tiempo restante desde la UI.</summary>
     Public Shared Instancia As MotorCliente
@@ -48,14 +53,50 @@ Public Class MotorCliente
 
     Public Sub Iniciar()
         AbrirSocket()
-        Log("arranque v4.9 puerto=" & ClienteCfg.Puerto.ToString() &
+        Log("arranque v3.2 puerto=" & ClienteCfg.Puerto.ToString() &
             " servidor=" & If(ClienteCfg.IpServidor = "", "(vacio)", ClienteCfg.IpServidor))
         PantallaBlo.DESBLOQUEO = False
         PantallaBlo.Show()
+        TecladoBloqueo.Instalar()
+        RestaurarSesionLocal()
+        ReportarEstadoCliente()
         tMsg.Interval = Math.Max(1, ClienteCfg.TiempoMensaje) * 1000
         tMsg.Start()
         tCap.Interval = 1000 ' ~1 cuadro/seg: casi tiempo real en LAN
         tCap.Start()
+    End Sub
+
+    Private Sub GuardarSesionLocal(activa As Boolean)
+        ClienteCfg.SesionLocalActiva = activa
+        If activa Then
+            ClienteCfg.SesionLocalInicio = HORAINICIO
+            ClienteCfg.SesionLocalFin = HORALIMITE
+        Else
+            ClienteCfg.SesionLocalInicio = DateTime.MinValue
+            ClienteCfg.SesionLocalFin = DateTime.MinValue
+            ClienteCfg.SesionLocalPausada = False
+            ClienteCfg.SesionLocalPausaDesde = DateTime.MinValue
+        End If
+        ClienteCfg.Guardar()
+    End Sub
+
+    Private Sub RestaurarSesionLocal()
+        Try
+            If Not ClienteCfg.SesionLocalActiva OrElse ClienteCfg.SesionLocalInicio = DateTime.MinValue Then Return
+            HORAINICIO = ClienteCfg.SesionLocalInicio
+            HORALIMITE = ClienteCfg.SesionLocalFin
+            AVISADO = False
+            If Not ClienteCfg.SesionLocalPausada Then
+                ClienteCfg.SesionLocalPausada = True
+                ClienteCfg.SesionLocalPausaDesde = DateTime.Now
+                ClienteCfg.Guardar()
+            End If
+            BloquearPantallaPorPausa()
+            ReportarEstadoCliente()
+            Log("sesion local restaurada en pausa")
+        Catch ex As Exception
+            Log("restaurar sesion error: " & ex.Message)
+        End Try
     End Sub
 
     Private Sub AbrirSocket()
@@ -65,6 +106,8 @@ Public Class MotorCliente
             End If
             ORDENADOR = New UdpClient(ClienteCfg.Puerto)
             ORDENADOR.Client.Blocking = False
+            Try : ORDENADOR.Client.ReceiveBufferSize = 2 * 1024 * 1024 : Catch : End Try
+            If _envio Is Nothing Then _envio = New UdpClient()
         Catch
             ORDENADOR = Nothing
         End Try
@@ -73,59 +116,186 @@ Public Class MotorCliente
     '================ RECEPCIÓN =================
     Private Sub tMsg_Tick(sender As Object, e As EventArgs) Handles tMsg.Tick
         Try
+            ReportarEstadoCliente()
             If ORDENADOR Is Nothing Then Return
-            If ORDENADOR.Available <= 0 Then Return
-            Dim IP As New IPEndPoint(IPAddress.Any, 0)
-            Dim raw As Byte() = ORDENADOR.Receive(IP)
-            _ultimoServidor = IP.Address.ToString()
-            ' Límite a 3 partes: el texto del mensaje puede contener ':'.
-            MIARRAY = Encoding.UTF8.GetString(raw).Split(New Char() {":"c}, 3)
-            If MIARRAY IsNot Nothing AndAlso MIARRAY.Length >= 1 Then EJECUTA()
-        Catch ex As SocketException
+            ' Drenar la cola (el fondo llega en decenas de datagramas por tick).
+            Dim n As Integer = 0
+            While ORDENADOR IsNot Nothing AndAlso ORDENADOR.Available > 0 AndAlso n < 80
+                n += 1
+                Try
+                    Dim IP As New IPEndPoint(IPAddress.Any, 0)
+                    Dim raw As Byte() = ORDENADOR.Receive(IP)
+                    _ultimoServidor = IP.Address.ToString()
+                    _ultimoPingServidor = DateTime.Now
+                    ' Límite a 3 partes: el texto del mensaje puede contener ':'.
+                    MIARRAY = Encoding.UTF8.GetString(raw).Split(New Char() {":"c}, 3)
+                    If MIARRAY IsNot Nothing AndAlso MIARRAY.Length >= 1 Then EJECUTA()
+                Catch ex As SocketException
+                Catch
+                End Try
+            End While
+            RevisarPulsoServidor()
         Catch
+        End Try
+    End Sub
+
+    Private Sub RevisarPulsoServidor()
+        If Not ClienteCfg.SesionLocalActiva OrElse ClienteCfg.SesionLocalPausada OrElse Not ClienteCfg.PausarSiServidorDesconectado Then Return
+        If _ultimoPingServidor = DateTime.MinValue OrElse (DateTime.Now - _ultimoPingServidor).TotalSeconds >= 15 Then
+            PausarSesionCliente()
+        End If
+    End Sub
+
+    Private Sub PausarSesionCliente()
+        If Not ClienteCfg.SesionLocalActiva OrElse ClienteCfg.SesionLocalPausada Then Return
+        ClienteCfg.SesionLocalPausada = True
+        ClienteCfg.SesionLocalPausaDesde = DateTime.Now
+        ClienteCfg.Guardar()
+        tMin.Stop()
+        BloquearPantallaPorPausa()
+        ReportarEstadoCliente()
+        Log("sesion pausada por cierre o desconexion del servidor")
+    End Sub
+
+    Private Sub BloquearPantallaPorPausa()
+        Try : TiempoServ.CerrarPorSistema() : Catch : End Try
+        Try : Mensaje.Close() : Catch : End Try
+        PantallaBlo.DESBLOQUEO = False
+        PantallaBlo.Show()
+        TecladoBloqueo.Instalar()
+    End Sub
+
+    Private Sub ReportarEstadoCliente()
+        Try
+            If ORDENADOR Is Nothing Then Return
+            Dim destino As String = If(String.IsNullOrWhiteSpace(ClienteCfg.IpServidor), _ultimoServidor, ClienteCfg.IpServidor).Trim()
+            Dim ip As IPAddress = Nothing
+            If Not IPAddress.TryParse(destino, ip) Then Return
+            If ClienteCfg.SesionLocalActiva AndAlso ClienteCfg.SesionLocalPausada Then
+                Dim inicioTicks As String = ClienteCfg.SesionLocalInicio.Ticks.ToString(Globalization.CultureInfo.InvariantCulture)
+                Dim finTicks As String = ClienteCfg.SesionLocalFin.Ticks.ToString(Globalization.CultureInfo.InvariantCulture)
+                Dim pausaTicks As String = ClienteCfg.SesionLocalPausaDesde.Ticks.ToString(Globalization.CultureInfo.InvariantCulture)
+                Dim pausado As Byte() = Encoding.UTF8.GetBytes("ESTADO:PAUSADO:" & inicioTicks & ":" & finTicks & ":" & pausaTicks)
+                If _envio Is Nothing Then _envio = New UdpClient()
+                _envio.Send(pausado, pausado.Length, New IPEndPoint(ip, ClienteCfg.Puerto))
+                Return
+            End If
+            Dim bloqueado As Boolean = Not PantallaBlo.IsDisposed AndAlso PantallaBlo.Visible
+            Dim estado As String = If(bloqueado, "BLOQUEADO", "EN_USO")
+            Dim datos As Byte() = Encoding.UTF8.GetBytes("ESTADO:" & estado)
+            If _envio Is Nothing Then _envio = New UdpClient()
+            _envio.Send(datos, datos.Length, New IPEndPoint(ip, ClienteCfg.Puerto))
+        Catch ex As Exception
+            Log("estado cliente error: " & ex.Message)
         End Try
     End Sub
 
     Public Sub EJECUTA()
         If MIARRAY Is Nothing OrElse MIARRAY.Length = 0 Then Return
         Select Case MIARRAY(0).Trim().ToUpperInvariant()
+            Case "PING"
+                _ultimoPingServidor = DateTime.Now
+                If MIARRAY.Length >= 2 Then
+                    Dim pausar As Boolean
+                    If Boolean.TryParse(MIARRAY(1).Trim(), pausar) Then
+                        If ClienteCfg.PausarSiServidorDesconectado <> pausar Then
+                            ClienteCfg.PausarSiServidorDesconectado = pausar
+                            ClienteCfg.Guardar()
+                        End If
+                    End If
+                End If
+                ReportarEstadoCliente()
+            Case "PAUSAR"
+                PausarSesionCliente()
             Case "INICIAR"
                 If MIARRAY.Length < 3 Then Return
                 Dim h, m As Integer
                 Integer.TryParse(MIARRAY(1), h) : Integer.TryParse(MIARRAY(2), m)
                 HORAINICIO = DateTime.Now
                 TiempoServ.LabelINICIO.Text = HORAINICIO.ToLongTimeString
-                HORALIMITE = HORAINICIO.AddMinutes(h * 60 + m)
-                TiempoServ.LabelLIMITE.Text = HORALIMITE.ToLongTimeString
+                HORALIMITE = If(h * 60 + m > 0, HORAINICIO.AddMinutes(h * 60 + m), DateTime.MinValue)
+                GuardarSesionLocal(True)
+                ClienteCfg.SesionLocalPausada = False
+                ClienteCfg.SesionLocalPausaDesde = DateTime.MinValue
+                ClienteCfg.Guardar()
+                TiempoServ.LabelLIMITE.Text = If(HORALIMITE = DateTime.MinValue, "Tiempo libre", HORALIMITE.ToLongTimeString())
                 AVISADO = False
                 PantallaBlo.DESBLOQUEO = True
+                TecladoBloqueo.Desinstalar()
                 Try : PantallaBlo.Close() : Catch : End Try
                 TiempoServ.Show()
-                tMin.Interval = 15000
-                tMin.Start()
+                tMin.Stop()
+                If HORALIMITE <> DateTime.MinValue Then
+                    tMin.Interval = 15000
+                    tMin.Start()
+                End If
+            Case "REANUDAR"
+                If MIARRAY.Length < 3 Then Return
+                Dim transcurrido As Integer
+                If Not Integer.TryParse(MIARRAY(1), transcurrido) OrElse transcurrido < 0 Then Return
+                HORAINICIO = DateTime.Now.AddSeconds(-transcurrido)
+                Dim tiempoLibre As Boolean = MIARRAY(2).Trim().Equals("LIBRE", StringComparison.OrdinalIgnoreCase)
+                Dim restante As Integer = 0
+                If Not tiempoLibre AndAlso (Not Integer.TryParse(MIARRAY(2), restante) OrElse restante <= 0) Then Return
+                HORALIMITE = If(tiempoLibre, DateTime.MinValue, DateTime.Now.AddSeconds(restante))
+                GuardarSesionLocal(True)
+                ClienteCfg.SesionLocalPausada = False
+                ClienteCfg.SesionLocalPausaDesde = DateTime.MinValue
+                ClienteCfg.Guardar()
+                AVISADO = False
+                TiempoServ.LabelINICIO.Text = HORAINICIO.ToLongTimeString
+                TiempoServ.LabelLIMITE.Text = If(tiempoLibre, "Tiempo libre", HORALIMITE.ToLongTimeString())
+                PantallaBlo.DESBLOQUEO = True
+                TecladoBloqueo.Desinstalar()
+                Try : PantallaBlo.Close() : Catch : End Try
+                TiempoServ.Show()
+                tMin.Stop()
+                If Not tiempoLibre Then
+                    tMin.Interval = 15000
+                    tMin.Start()
+                End If
             Case "AÑADIR"
                 If MIARRAY.Length < 3 Then Return
                 Dim h, m As Integer
                 Integer.TryParse(MIARRAY(1), h) : Integer.TryParse(MIARRAY(2), m)
-                HORALIMITE = HORALIMITE.AddMinutes(h * 60 + m)
+                If h * 60 + m <= 0 Then Return
+                HORALIMITE = If(HORALIMITE = DateTime.MinValue, DateTime.Now.AddMinutes(h * 60 + m), HORALIMITE.AddMinutes(h * 60 + m))
+                GuardarSesionLocal(True)
+                ClienteCfg.SesionLocalPausada = False
+                ClienteCfg.SesionLocalPausaDesde = DateTime.MinValue
+                ClienteCfg.Guardar()
                 Try : TiempoServ.LabelLIMITE.Text = HORALIMITE.ToLongTimeString : Catch : End Try
-            Case "BLOQUEO"
                 tMin.Stop()
-                Try : TiempoServ.Close() : Catch : End Try
+                tMin.Interval = 15000
+                tMin.Start()
+            Case "BLOQUEO"
+                GuardarSesionLocal(False)
+                tMin.Stop()
+                HORAINICIO = DateTime.MinValue
+                HORALIMITE = DateTime.MinValue
+                AVISADO = False
+                Try : TiempoServ.CerrarPorSistema() : Catch : End Try
                 Try : Mensaje.Close() : Catch : End Try
                 PantallaBlo.DESBLOQUEO = False
                 PantallaBlo.Show()
+                TecladoBloqueo.Instalar()
             Case "DESBLOQUEAR"
                 HORAINICIO = DateTime.Now
+                HORALIMITE = DateTime.MinValue
+                GuardarSesionLocal(True)
+                ClienteCfg.SesionLocalPausada = False
+                ClienteCfg.SesionLocalPausaDesde = DateTime.MinValue
+                ClienteCfg.Guardar()
                 Try : TiempoServ.LabelINICIO.Text = HORAINICIO.ToLongTimeString : Catch : End Try
+                Try : TiempoServ.LabelLIMITE.Text = "Tiempo libre" : Catch : End Try
                 tMin.Stop()
-                Try : TiempoServ.Close() : Catch : End Try
+                Try : TiempoServ.CerrarPorSistema() : Catch : End Try
                 Try : Mensaje.Close() : Catch : End Try
                 PantallaBlo.DESBLOQUEO = True
+                TecladoBloqueo.Desinstalar()
                 Try : PantallaBlo.Close() : Catch : End Try
                 TiempoServ.Show()
-                tMin.Interval = 15000
-                tMin.Start()
+                tMin.Stop()
             Case "MENSAJE"
                 Mensaje.TextBoxMENSAJES.Text = If(MIARRAY.Length >= 2, MIARRAY(1), "")
                 Mensaje.Show()
@@ -162,9 +332,55 @@ Public Class MotorCliente
                 Log("setcfg clave=" & If(MIARRAY.Length >= 2, MIARRAY(1), "?"))
                 AplicarCfg()
             Case "SALIR"
+                GuardarSesionLocal(False)
                 CERRAR()
                 Application.ExitThread()
+            Case "FONDOINI"
+                Try
+                    Dim t As Integer
+                    If MIARRAY.Length >= 2 AndAlso Integer.TryParse(MIARRAY(1).Trim(), t) AndAlso t > 0 AndAlso t <= 500 Then
+                        _fondoTotal = t
+                        _fondoPartes.Clear()
+                        _fondoT0 = DateTime.Now
+                        Log("fondo inicio partes=" & t.ToString())
+                    End If
+                Catch
+                End Try
+            Case "FONDO"
+                ProcesarFondo()
         End Select
+    End Sub
+
+    ''' <summary>Reensambla el fondo (Base64) y lo guarda como fondo.jpg.</summary>
+    Private Sub ProcesarFondo()
+        Try
+            If _fondoTotal <= 0 Then Return
+            If (DateTime.Now - _fondoT0).TotalSeconds > 60 Then
+                _fondoTotal = -1 : _fondoPartes.Clear() : Return
+            End If
+            If MIARRAY.Length < 3 Then Return
+            Dim idx As Integer
+            If Not Integer.TryParse(MIARRAY(1).Trim(), idx) Then Return
+            _fondoPartes(idx) = Convert.FromBase64String(MIARRAY(2))
+            If _fondoPartes.Count >= _fondoTotal Then
+                Using ms As New IO.MemoryStream()
+                    For i As Integer = 0 To _fondoTotal - 1
+                        If Not _fondoPartes.ContainsKey(i) Then Return
+                        ms.Write(_fondoPartes(i), 0, _fondoPartes(i).Length)
+                    Next
+                    Dim ruta As String = IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "fondo.jpg")
+                    IO.File.WriteAllBytes(ruta, ms.ToArray())
+                End Using
+                Log("fondo recibido bytes=" & _fondoPartes.Values.Sum(Function(b) b.Length).ToString())
+                _fondoTotal = -1 : _fondoPartes.Clear()
+                Try
+                    If Not PantallaBlo.IsDisposed AndAlso PantallaBlo.Visible Then PantallaBlo.AplicarFondo()
+                Catch
+                End Try
+            End If
+        Catch ex As Exception
+            Log("fondo error: " & ex.Message)
+        End Try
     End Sub
 
     ''' <summary>SETCFG:clave:valor — guarda cifrado y aplica en caliente.</summary>
@@ -214,6 +430,20 @@ Public Class MotorCliente
                         ClienteCfg.Guardar()
                         Log("cfg aplicado pass=***")
                     End If
+                Case "taskmgr"
+                    Dim activar As Boolean
+                    If Boolean.TryParse(MIARRAY(2).Trim(), activar) Then
+                        ClienteCfg.BloquearAdministradorTareas = activar
+                        ClienteCfg.Guardar()
+                        ClienteCfg.AplicarOpcionesWindows()
+                    End If
+                Case "autostart"
+                    Dim activar As Boolean
+                    If Boolean.TryParse(MIARRAY(2).Trim(), activar) Then
+                        ClienteCfg.IniciarConWindows = activar
+                        ClienteCfg.Guardar()
+                        ClienteCfg.AplicarOpcionesWindows()
+                    End If
             End Select
             ' Refrescar el nombre en la pantalla de bloqueo abierta.
             Try
@@ -228,7 +458,8 @@ Public Class MotorCliente
 
     Private Sub CERRAR()
         Try : tMin.Stop() : Catch : End Try
-        Try : TiempoServ.Close() : Catch : End Try
+        Try : TecladoBloqueo.Desinstalar() : Catch : End Try
+        Try : TiempoServ.CerrarPorSistema() : Catch : End Try
         Try : Mensaje.Close() : Catch : End Try
         PantallaBlo.DESBLOQUEO = False
         Try : PantallaBlo.Close() : Catch : End Try
@@ -247,10 +478,14 @@ Public Class MotorCliente
                 Mensaje.Show()
             End If
             If ahora >= HORALIMITE Then
+                GuardarSesionLocal(False)
+                HORAINICIO = DateTime.MinValue
+                HORALIMITE = DateTime.MinValue
+                AVISADO = False
                 tMin.Stop()
                 AVISADO = False
                 Try : Mensaje.Close() : Catch : End Try
-                Try : TiempoServ.Close() : Catch : End Try
+                Try : TiempoServ.CerrarPorSistema() : Catch : End Try
                 PantallaBlo.DESBLOQUEO = False
                 PantallaBlo.Show()
             End If
@@ -311,8 +546,10 @@ Public Class MotorCliente
             If Not IpValida(dest) Then Return
             Dim p As Integer = ClienteCfg.Puerto
             If p <= 0 OrElse p > 65535 Then p = 55555
-            ORDENADOR.Send(data, data.Length, New IPEndPoint(IPAddress.Parse(dest), p))
-        Catch
+            If _envio Is Nothing Then _envio = New UdpClient()
+            _envio.Send(data, data.Length, New IPEndPoint(IPAddress.Parse(dest), p))
+        Catch ex As Exception
+            Log("udp envio servidor error: " & ex.Message)
         End Try
     End Sub
 

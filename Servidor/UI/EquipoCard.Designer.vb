@@ -19,6 +19,7 @@ Partial Class EquipoCard
     Private Sub InitializeComponent()
         Me.grid = New System.Windows.Forms.TableLayoutPanel()
         Me.lblIp = New System.Windows.Forms.Label()
+        Me.lblSesion = New System.Windows.Forms.Label()
         Me.rT = New System.Windows.Forms.Panel()
         Me.lh = New System.Windows.Forms.Label()
         Me.numH = New System.Windows.Forms.NumericUpDown()
@@ -26,6 +27,8 @@ Partial Class EquipoCard
         Me.numM = New System.Windows.Forms.NumericUpDown()
         Me.btnIniciar = New System.Windows.Forms.Button()
         Me.btnAnadir = New System.Windows.Forms.Button()
+        Me.btnReanudar = New System.Windows.Forms.Button()
+        Me.btnFinalizar = New System.Windows.Forms.Button()
         Me.rB = New System.Windows.Forms.Panel()
         Me.btnBloq = New System.Windows.Forms.Button()
         Me.btnDesbloq = New System.Windows.Forms.Button()
@@ -56,16 +59,18 @@ Partial Class EquipoCard
         Me.grid.ColumnCount = 1
         Me.grid.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.grid.Controls.Add(Me.lblIp, 0, 0)
-        Me.grid.Controls.Add(Me.rT, 0, 1)
-        Me.grid.Controls.Add(Me.rB, 0, 2)
-        Me.grid.Controls.Add(Me.rM, 0, 3)
-        Me.grid.Controls.Add(Me.rP, 0, 4)
+        Me.grid.Controls.Add(Me.lblSesion, 0, 1)
+        Me.grid.Controls.Add(Me.rT, 0, 2)
+        Me.grid.Controls.Add(Me.rB, 0, 3)
+        Me.grid.Controls.Add(Me.rM, 0, 4)
+        Me.grid.Controls.Add(Me.rP, 0, 5)
         Me.grid.Dock = System.Windows.Forms.DockStyle.Fill
         Me.grid.Location = New System.Drawing.Point(0, 56)
         Me.grid.Name = "grid"
         Me.grid.Padding = New System.Windows.Forms.Padding(10, 8, 10, 8)
-        Me.grid.RowCount = 5
+        Me.grid.RowCount = 6
         Me.grid.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24.0!))
+        Me.grid.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34.0!))
         Me.grid.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38.0!))
         Me.grid.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38.0!))
         Me.grid.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38.0!))
@@ -85,7 +90,17 @@ Partial Class EquipoCard
         Me.lblIp.TabIndex = 0
         Me.lblIp.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'rT
+        'lblSesion
+        Me.lblSesion.AutoEllipsis = True
+        Me.lblSesion.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.lblSesion.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.lblSesion.ForeColor = System.Drawing.Color.FromArgb(55, 65, 81)
+        Me.lblSesion.Name = "lblSesion"
+        Me.lblSesion.Size = New System.Drawing.Size(346, 34)
+        Me.lblSesion.TabIndex = 5
+        Me.lblSesion.Text = "Sin sesión activa"
+        Me.lblSesion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '        'rT
         '
         Me.rT.BackColor = System.Drawing.Color.White
         Me.rT.Controls.Add(Me.lh)
@@ -94,6 +109,8 @@ Partial Class EquipoCard
         Me.rT.Controls.Add(Me.numM)
         Me.rT.Controls.Add(Me.btnIniciar)
         Me.rT.Controls.Add(Me.btnAnadir)
+        Me.rT.Controls.Add(Me.btnReanudar)
+        Me.rT.Controls.Add(Me.btnFinalizar)
         Me.rT.Dock = System.Windows.Forms.DockStyle.Fill
         Me.rT.Location = New System.Drawing.Point(13, 35)
         Me.rT.Name = "rT"
@@ -155,6 +172,26 @@ Partial Class EquipoCard
         Me.btnAnadir.TabIndex = 5
         Me.btnAnadir.Text = "Añadir"
         Me.btnAnadir.UseVisualStyleBackColor = True
+        '
+        'btnReanudar
+        '
+        Me.btnReanudar.Location = New System.Drawing.Point(0, 2)
+        Me.btnReanudar.Name = "btnReanudar"
+        Me.btnReanudar.Size = New System.Drawing.Size(165, 32)
+        Me.btnReanudar.TabIndex = 6
+        Me.btnReanudar.Text = "Reanudar"
+        Me.btnReanudar.UseVisualStyleBackColor = True
+        Me.btnReanudar.Visible = True
+        '
+        'btnFinalizar
+        '
+        Me.btnFinalizar.Location = New System.Drawing.Point(175, 2)
+        Me.btnFinalizar.Name = "btnFinalizar"
+        Me.btnFinalizar.Size = New System.Drawing.Size(165, 32)
+        Me.btnFinalizar.TabIndex = 7
+        Me.btnFinalizar.Text = "Finalizar / cobrar"
+        Me.btnFinalizar.UseVisualStyleBackColor = True
+        Me.btnFinalizar.Visible = True
         '
         'rB
         '
@@ -326,6 +363,7 @@ Partial Class EquipoCard
 
     Friend WithEvents grid As TableLayoutPanel
     Friend WithEvents lblIp As Label
+    Friend WithEvents lblSesion As Label
     Friend WithEvents rT As Panel
     Friend WithEvents lh As Label
     Friend WithEvents numH As NumericUpDown
@@ -333,6 +371,8 @@ Partial Class EquipoCard
     Friend WithEvents numM As NumericUpDown
     Friend WithEvents btnIniciar As Button
     Friend WithEvents btnAnadir As Button
+    Friend WithEvents btnReanudar As Button
+    Friend WithEvents btnFinalizar As Button
     Friend WithEvents rB As Panel
     Friend WithEvents btnBloq As Button
     Friend WithEvents btnDesbloq As Button

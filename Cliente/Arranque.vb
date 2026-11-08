@@ -8,6 +8,7 @@ Public Module Arranque
         Application.EnableVisualStyles()
         Application.SetCompatibleTextRenderingDefault(False)
         ClienteCfg.Cargar()
+        ClienteCfg.AplicarOpcionesWindows()
         Dim motor As New MotorCliente()
         MotorCliente.Instancia = motor
         motor.Iniciar()

@@ -1,4 +1,4 @@
-# Cómo instalar Control de Ciber v3
+# Cómo instalar Control de Ciber v3.2
 
 Guía para instalar el sistema desde cero en un ciber nuevo. Tiempo estimado: 20-30 minutos.
 
@@ -17,38 +17,43 @@ De la carpeta `Salida/` del sistema:
 
 ## 3. Servidor (mostrador)
 1. Abre `Servidor.exe` (la primera vez como administrador: clic derecho → Ejecutar como administrador).
-2. Se crea solo `ciber.db` junto al exe. Verás el panel con sidebar oscuro.
+2. Se crea `ciber.db` junto al exe. Ahí se guardan equipos, productos, ventas, sesiones, tarifa y preferencias del servidor. **No borres ni reemplaces este archivo al actualizar** si quieres conservar esos datos.
 3. Ve a **Red y equipos**: pulsa `+ Equipo` por cada PC (o edita los existentes), escribe su **IP** (ej. `192.168.1.21`) y pulsa **Guardar IPs**. Deja el puerto en `55555` salvo que choque con otro programa.
 4. **Firewall del servidor** (Terminal como administrador):
 ```powershell
 New-NetFirewallRule -DisplayName "Ciber Servidor UDP" -Direction Inbound -Protocol UDP -LocalPort 55555 -Profile Any -Action Allow
 ```
-5. Anota la IP del servidor: `Win+R` → `cmd` → `ipconfig` → línea `Dirección IPv4` (ej. `192.168.1.50`).
+5. Anota la IP del servidor: `Win+R` → `cmd` → `ipconfig` → línea `Dirección IPv4` (ej. `192.168.1.50`). El panel puede prellenar esta IP; confirma que corresponda a la red local.
 
 ## 4. Cada PC cliente
-1. Copia `Cliente.exe` y ábrelo: verás la pantalla de bloqueo blanca con el nombre del ciber.
+1. Copia `Cliente.exe` y ábrelo: verás la pantalla de bloqueo con el nombre del ciber.
 2. Se crean solos `cliente.cfg` (cifrado) y `cliente.log` junto al exe.
 3. **Firewall del cliente** (Terminal como administrador):
 ```powershell
 New-NetFirewallRule -DisplayName "Ciber Cliente UDP" -Direction Inbound -Protocol UDP -LocalPort 55555 -Profile Any -Action Allow
 ```
 4. Si el antivirus tiene firewall propio (Avast, ESET, Kaspersky), permite también ahí el puerto UDP `55555` o al programa `Cliente.exe`.
-5. **Arranque automático** (para que el bloqueo aparezca solo al prender la PC): `Win+R` → `shell:startup` → crea un acceso directo a `Cliente.exe` en esa carpeta.
+5. Puedes habilitar el inicio automático del cliente desde el servidor; también puedes crear manualmente un acceso directo en `Win+R` → `shell:startup` si prefieres configurarlo directamente en Windows.
 
 ## 5. Primera configuración (desde el servidor, sin tocar los clientes)
-1. En **Red → Configurar cliente**: elige **Todos**, escribe IP del servidor (la del paso 3.5), nombre del ciber, tiempos y una **nueva clave** (la inicial es `102250`, cámbiala aquí) → **Enviar al cliente**.
+1. En **Red → Configurar cliente**, elige **Todos** o un equipo, escribe IP del servidor (la del paso 3.5), nombre del ciber, tiempos y una **nueva clave** (la inicial es `102250`, cámbiala aquí). Configura también Administrador de tareas e inicio con Windows si lo necesitas. Pulsa **Enviar al cliente**.
 2. En cada cliente abre `cliente.log` y confirma líneas `cfg aplicado ...`. Si no llegan, revisa el apartado 8.
-3. Prueba **VER** en una tarjeta: debe pasar a `En vivo` en ~5 segundos. Cambia la **Calidad** (Baja/Media/Alta/Muy alta) a gusto.
+3. Los perfiles enviados quedan guardados por equipo y para **Todos**. Al seleccionar un destino o volver a abrir el servidor se recuperan los valores; el fondo elegido también se conserva. La clave se mantiene cifrada en el perfil local del usuario Windows que ejecuta el servidor.
+4. En **Punto de venta**, registra la tarifa por hora que usarás para cobrar el tiempo de PC.
+5. Prueba **VER** en una tarjeta: debe pasar a `En vivo` en ~5 segundos. Cambia la **Calidad** (Baja/Media/Alta/Muy alta) a gusto.
 
 ## 6. Uso diario
-- **Dar tiempo:** tarjeta del equipo → H/M → Iniciar (el cliente se desbloquea y ve su cronómetro `Te quedan HH:MM:SS`). **Añadir** suma minutos. **Bloquear/Desbloquear** al terminar.
-- **Vender:** Punto de venta → agrega productos → Cobrar (descuenta stock solo).
-- **Inventario:** Productos (Nuevo/Guardar/Eliminar). **Caja del día** para el corte.
+- **Dar tiempo:** tarjeta del equipo → H/M → Iniciar (el cliente se desbloquea y ve su cronómetro `Te quedan HH:MM:SS`). **Añadir** suma minutos. Con 0 minutos la sesión es libre y puedes cobrar el tiempo transcurrido según la tarifa.
+- **Cobrar una mesa:** pulsa **Cobrar** en su tarjeta para enviar la cuenta al POS. Ahí se ven el uso del PC y los productos cargados; puedes cobrar el total o repartirlo entre efectivo, tarjeta y transferencia. También puedes cobrar el consumo acumulado antes de terminar una sesión.
+- **Cargar productos a una mesa:** en el POS selecciona el equipo antes de agregar productos y elige **Cargar a cuenta**. El importe se suma a su cuenta para cobrarlo junto con el tiempo de uso.
+- **Recuperar sesiones:** si el servidor se cierra o un equipo se reinicia, la sesión puede aparecer pausada. Usa **Reanudar** para continuar el reloj o **Cobrar/Finalizar** para llevar el consumo al POS. En Red puedes definir si al cerrar el servidor se pausa el tiempo o sigue corriendo.
+- **Inventario e historial:** Productos (Nuevo/Guardar/Eliminar). El historial detalla los artículos y cargos, y muestra cuánto se recibió en efectivo, transferencia y tarjeta. **Caja del día** resume esos métodos y las sesiones.
+- **Seguridad del cliente:** desde Red puedes elegir si bloquear el Administrador de tareas y si iniciar el cliente con Windows. El cliente requiere seguir ejecutándose para recibir órdenes y pulsos del servidor.
 - **Mensajes:** escribe en la tarjeta → Enviar (F5/Enter).
 - La clave de desbloqueo en cada cliente es la que configuraste (también sirve si se cae la red).
 
 ## 7. Desinstalar
-1. Cierra los programas y borra sus carpetas (`ciber.db`, `cliente.cfg` y logs se van con ellas).
+1. Cierra los programas y borra sus carpetas. Al eliminar `ciber.db` se perderán equipos, configuración, productos, ventas y sesiones guardadas; respáldalo antes si necesitas conservarlos. `cliente.cfg` y los logs también se almacenan junto a cada ejecutable.
 2. Quita las reglas de firewall (administrador):
 ```powershell
 Remove-NetFirewallRule -DisplayName "Ciber Servidor UDP"

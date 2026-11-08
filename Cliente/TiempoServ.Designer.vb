@@ -107,7 +107,7 @@ Partial Class TiempoServ
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(106, 13)
         Me.Label4.TabIndex = 6
-        Me.Label4.Text = "Control de Ciber v3.0"
+        Me.Label4.Text = "Control de Ciber v3.2"
         '
         'LabelRestante
         '

@@ -19,11 +19,36 @@ Public Class HistorialControl
             Dim dt = Servidor.Data.Db.HistorialVentas(dtpDesde.Value.Date, dtpHasta.Value.Date)
             dgv.DataSource = dt
             If dgv.Columns.Contains("Total") Then dgv.Columns("Total").DefaultCellStyle.Format = "N2"
+            For Each nombre As String In New String() {"Efectivo", "Transferencia", "Tarjeta"}
+                If dgv.Columns.Contains(nombre) Then dgv.Columns(nombre).DefaultCellStyle.Format = "N2"
+            Next
+            If dgv.Columns.Contains("Productos") Then
+                dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None
+                dgv.Columns("Id").Width = 48
+                dgv.Columns("Fecha").Width = 150
+                dgv.Columns("Equipo").Width = 90
+                dgv.Columns("Productos").Width = 210
+                dgv.Columns("Servicios").Width = 105
+                dgv.Columns("Total").Width = 85
+                dgv.Columns("MetodoPago").Visible = False
+                dgv.Columns("Pagos").Visible = False
+                dgv.Columns("Efectivo").Width = 85
+                dgv.Columns("Transferencia").Width = 105
+                dgv.Columns("Tarjeta").Width = 85
+                dgv.Columns("Productos").AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+                dgv.Columns("Productos").MinimumWidth = 150
+                dgv.Columns("Servicios").HeaderText = "Otros cargos"
+                dgv.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
+                dgv.Columns("Productos").DefaultCellStyle.WrapMode = DataGridViewTriState.True
+                dgv.Columns("Servicios").DefaultCellStyle.WrapMode = DataGridViewTriState.True
+            End If
             Dim t As Decimal = 0
             For Each r As DataRow In dt.Rows
                 t += CDec(r("Total"))
             Next
-            lblTotal.Text = "Total: $" & t.ToString("N2") & " (" & dt.Rows.Count.ToString() & ")"
+            Dim pagos = Servidor.Data.Db.ResumenPagos(dtpDesde.Value.Date, dtpHasta.Value.Date)
+            lblTotal.Text = "Total: $" & t.ToString("N2") & " (" & dt.Rows.Count.ToString() & ")" & vbCrLf &
+                "Efectivo: $" & pagos("Efectivo").ToString("N2") & " · Transferencia: $" & pagos("Transferencia").ToString("N2") & " · Tarjeta: $" & pagos("Tarjeta").ToString("N2")
         Catch ex As Exception
             MessageBox.Show(ex.Message, "Historial", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try

@@ -18,6 +18,7 @@ Public Class PantallaBlo
                 e.SuppressKeyPress = True
                 DESBLOQUEO = True
                 TextBoxCONTRASEÑA.Clear()
+                TecladoBloqueo.Desinstalar()
                 Me.Close()
             Else
                 MessageBox.Show("La contraseña del administrador no es correcta", "Control Ciber", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -46,27 +47,63 @@ Public Class PantallaBlo
         proceso.Start()
     End Sub
 
+    Private Sub PantallaBlo_VisibleChanged(sender As Object, e As EventArgs) Handles MyBase.VisibleChanged
+        ' Hook solo con el bloqueo visible: al desbloquear o cerrar se libera el teclado.
+        Try
+            If Me.Visible AndAlso Not DESBLOQUEO Then
+                TecladoBloqueo.Instalar()
+            Else
+                TecladoBloqueo.Desinstalar()
+            End If
+        Catch
+        End Try
+    End Sub
+
+    ''' <summary>Muestra fondo.jpg (enviado desde el servidor) o limpia si no existe.</summary>
+    Public Sub AplicarFondo()
+        Try
+            Dim ruta As String = IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "fondo.jpg")
+            If Not IO.File.Exists(ruta) Then
+                Try
+                    Dim old0 = picFondo.Image
+                    picFondo.Image = Nothing
+                    If old0 IsNot Nothing Then old0.Dispose()
+                Catch
+                End Try
+                Return
+            End If
+            Dim bin As Byte() = IO.File.ReadAllBytes(ruta)
+            Using ms As New IO.MemoryStream(bin)
+                Using img As Image = Image.FromStream(ms)
+                    Dim bmp As New Bitmap(img)
+                    Dim old = picFondo.Image
+                    picFondo.Image = bmp
+                    If old IsNot Nothing Then old.Dispose()
+                End Using
+            End Using
+        Catch
+        End Try
+    End Sub
+
     Private Sub PantallaBlo_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         lblNombreCiber.Text = ClienteCfg.NombreCiber
-        ' Tema claro v4.6 (solo colores, sin tocar layout del diseñador)
+        AplicarFondo()
+        ' Tema claro (solo colores, sin tocar layout del diseñador)
         Try
             Dim ink As Color = Color.FromArgb(31, 41, 55)
             Dim accent As Color = Color.FromArgb(45, 137, 239)
             Dim soft As Color = Color.FromArgb(243, 244, 246)
             Me.BackColor = Color.White
-            Panel2.BackColor = Color.White
-            panelAbajo.BackColor = Color.White
-            panelIzquierda.BackColor = soft
-            GroupBox1.ForeColor = ink : GroupBox1.BackColor = Color.Transparent
-            GroupBox2.ForeColor = ink : GroupBox2.BackColor = Color.Transparent
-            GroupBox3.BackColor = Color.Transparent
+            Panel2.BackColor = soft
             Label1.ForeColor = ink
-            lblNombreCiber.ForeColor = accent
             Label3.ForeColor = ink
-            Label5.ForeColor = Color.FromArgb(107, 114, 128) : Label5.Text = "v3.0"
+            Label5.ForeColor = Color.FromArgb(107, 114, 128) : Label5.Text = "v3.2"
             Label4.ForeColor = ink
             Label2.ForeColor = Color.FromArgb(107, 114, 128)
             TextBoxCONTRASEÑA.BackColor = Color.White
+
+            PictureBox1.Parent = picFondo
+            Label1.Parent = picFondo
         Catch
         End Try
     End Sub

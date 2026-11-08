@@ -53,6 +53,11 @@ Partial Class Dashboard
         Me.lCfgPass = New System.Windows.Forms.Label()
         Me.txtCfgPass = New System.Windows.Forms.TextBox()
         Me.bCfgEnviar = New System.Windows.Forms.Button()
+        Me.lTaskMgr = New System.Windows.Forms.Label()
+        Me.cboTaskMgr = New System.Windows.Forms.ComboBox()
+        Me.lAutostart = New System.Windows.Forms.Label()
+        Me.cboAutostart = New System.Windows.Forms.ComboBox()
+        Me.chkPausarAlCerrar = New System.Windows.Forms.CheckBox()
         Me.fCfg1 = New System.Windows.Forms.FlowLayoutPanel()
         Me.lCfgEq = New System.Windows.Forms.Label()
         Me.cboCfgEq = New System.Windows.Forms.ComboBox()
@@ -60,9 +65,19 @@ Partial Class Dashboard
         Me.txtCfgSrv = New System.Windows.Forms.TextBox()
         Me.lCfgCiber = New System.Windows.Forms.Label()
         Me.txtCfgCiber = New System.Windows.Forms.TextBox()
+        Me.grpFondo = New System.Windows.Forms.GroupBox()
+        Me.fFondo = New System.Windows.Forms.FlowLayoutPanel()
+        Me.btnEnviarFondo = New System.Windows.Forms.Button()
+        Me.lblFondoInfo = New System.Windows.Forms.Label()
+        Me.cboFondoEq = New System.Windows.Forms.ComboBox()
+        Me.btnElegirFondo = New System.Windows.Forms.Button()
         Me.hintRed = New System.Windows.Forms.Label()
         Me.pageAcerca = New System.Windows.Forms.Panel()
         Me.wrapAcerca = New System.Windows.Forms.Panel()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.fAcerca = New System.Windows.Forms.FlowLayoutPanel()
+        Me.btnTerminos = New System.Windows.Forms.Button()
+        Me.btnBuscarUpd = New System.Windows.Forms.Button()
         Me.linkSitio = New System.Windows.Forms.LinkLabel()
         Me.gridAcerca = New System.Windows.Forms.TableLayoutPanel()
         Me.ak0 = New System.Windows.Forms.Label()
@@ -92,6 +107,7 @@ Partial Class Dashboard
         Me.dgvSesHoy = New System.Windows.Forms.DataGridView()
         Me.sumCaja = New System.Windows.Forms.Panel()
         Me.btnCajaHoy = New System.Windows.Forms.Button()
+        Me.lblDesgloseHoy = New System.Windows.Forms.Label()
         Me.lblNTickets = New System.Windows.Forms.Label()
         Me.lblTotalHoy = New System.Windows.Forms.Label()
         Me.pageEquipos = New System.Windows.Forms.Panel()
@@ -107,8 +123,12 @@ Partial Class Dashboard
         CType(Me.numCfgMsg, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.numCfgPre, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.fCfg1.SuspendLayout()
+        Me.grpFondo.SuspendLayout()
+        Me.fFondo.SuspendLayout()
         Me.pageAcerca.SuspendLayout()
         Me.wrapAcerca.SuspendLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.fAcerca.SuspendLayout()
         Me.gridAcerca.SuspendLayout()
         Me.pageHist.SuspendLayout()
         Me.pageProductos.SuspendLayout()
@@ -154,7 +174,7 @@ Partial Class Dashboard
         Me.lblVer.Name = "lblVer"
         Me.lblVer.Size = New System.Drawing.Size(230, 30)
         Me.lblVer.TabIndex = 9
-        Me.lblVer.Text = "  v3.0"
+        Me.lblVer.Text = "  v3.2"
         Me.lblVer.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'btnAcerca
@@ -265,7 +285,7 @@ Partial Class Dashboard
         Me.lblSub.Padding = New System.Windows.Forms.Padding(18, 0, 0, 0)
         Me.lblSub.Size = New System.Drawing.Size(230, 26)
         Me.lblSub.TabIndex = 1
-        Me.lblSub.Text = "Control v3.0 · SQLite"
+        Me.lblSub.Text = "Control v3.2 · SQLite"
         '
         'lblLogo
         '
@@ -277,7 +297,7 @@ Partial Class Dashboard
         Me.lblLogo.Padding = New System.Windows.Forms.Padding(18, 0, 0, 4)
         Me.lblLogo.Size = New System.Drawing.Size(230, 70)
         Me.lblLogo.TabIndex = 0
-        Me.lblLogo.Text = "CYBER"
+        Me.lblLogo.Text = "CIBER"
         Me.lblLogo.TextAlign = System.Drawing.ContentAlignment.BottomLeft
         '
         'topBar
@@ -295,14 +315,14 @@ Partial Class Dashboard
         '
         'lblHoy
         '
-        Me.lblHoy.AutoSize = True
-        Me.lblHoy.Font = New System.Drawing.Font("Segoe UI", 11.0!, System.Drawing.FontStyle.Bold)
+        Me.lblHoy.Font = New System.Drawing.Font("Segoe UI", 8.5!)
         Me.lblHoy.ForeColor = System.Drawing.Color.FromArgb(CType(CType(39, Byte), Integer), CType(CType(174, Byte), Integer), CType(CType(96, Byte), Integer))
         Me.lblHoy.Location = New System.Drawing.Point(482, 20)
         Me.lblHoy.Name = "lblHoy"
-        Me.lblHoy.Size = New System.Drawing.Size(59, 20)
+        Me.lblHoy.Size = New System.Drawing.Size(230, 44)
         Me.lblHoy.TabIndex = 2
         Me.lblHoy.Text = "Hoy $0"
+        Me.lblHoy.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'lblReloj
         '
@@ -341,13 +361,13 @@ Partial Class Dashboard
         'content
         '
         Me.content.BackColor = System.Drawing.Color.FromArgb(CType(CType(243, Byte), Integer), CType(CType(244, Byte), Integer), CType(CType(246, Byte), Integer))
+        Me.content.Controls.Add(Me.pageRed)
         Me.content.Controls.Add(Me.pageAcerca)
         Me.content.Controls.Add(Me.pageHist)
         Me.content.Controls.Add(Me.pageProductos)
         Me.content.Controls.Add(Me.pageVentas)
         Me.content.Controls.Add(Me.pageCaja)
         Me.content.Controls.Add(Me.pageEquipos)
-        Me.content.Controls.Add(Me.pageRed)
         Me.content.Dock = System.Windows.Forms.DockStyle.Fill
         Me.content.Location = New System.Drawing.Point(230, 64)
         Me.content.Name = "content"
@@ -360,6 +380,7 @@ Partial Class Dashboard
         Me.pageRed.Controls.Add(Me.dgvRed)
         Me.pageRed.Controls.Add(Me.barRed)
         Me.pageRed.Controls.Add(Me.cfgRed)
+        Me.pageRed.Controls.Add(Me.grpFondo)
         Me.pageRed.Controls.Add(Me.hintRed)
         Me.pageRed.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pageRed.Location = New System.Drawing.Point(6, 6)
@@ -374,7 +395,7 @@ Partial Class Dashboard
         Me.dgvRed.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvRed.Location = New System.Drawing.Point(0, 56)
         Me.dgvRed.Name = "dgvRed"
-        Me.dgvRed.Size = New System.Drawing.Size(942, 399)
+        Me.dgvRed.Size = New System.Drawing.Size(942, 291)
         Me.dgvRed.TabIndex = 2
         '
         'barRed
@@ -461,9 +482,9 @@ Partial Class Dashboard
         Me.cfgRed.Controls.Add(Me.fCfg2)
         Me.cfgRed.Controls.Add(Me.fCfg1)
         Me.cfgRed.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.cfgRed.Location = New System.Drawing.Point(0, 455)
+        Me.cfgRed.Location = New System.Drawing.Point(0, 347)
         Me.cfgRed.Name = "cfgRed"
-        Me.cfgRed.Size = New System.Drawing.Size(942, 120)
+        Me.cfgRed.Size = New System.Drawing.Size(942, 164)
         Me.cfgRed.TabIndex = 1
         Me.cfgRed.TabStop = False
         Me.cfgRed.Text = "Configurar cliente (el equipo la guarda cifrada en cliente.cfg)"
@@ -478,10 +499,15 @@ Partial Class Dashboard
         Me.fCfg2.Controls.Add(Me.lCfgPass)
         Me.fCfg2.Controls.Add(Me.txtCfgPass)
         Me.fCfg2.Controls.Add(Me.bCfgEnviar)
+        Me.fCfg2.Controls.Add(Me.lTaskMgr)
+        Me.fCfg2.Controls.Add(Me.cboTaskMgr)
+        Me.fCfg2.Controls.Add(Me.lAutostart)
+        Me.fCfg2.Controls.Add(Me.cboAutostart)
+        Me.fCfg2.Controls.Add(Me.chkPausarAlCerrar)
         Me.fCfg2.Dock = System.Windows.Forms.DockStyle.Top
         Me.fCfg2.Location = New System.Drawing.Point(3, 56)
         Me.fCfg2.Name = "fCfg2"
-        Me.fCfg2.Size = New System.Drawing.Size(936, 40)
+        Me.fCfg2.Size = New System.Drawing.Size(936, 80)
         Me.fCfg2.TabIndex = 1
         '
         'lCfgMsg
@@ -552,6 +578,58 @@ Partial Class Dashboard
         Me.bCfgEnviar.TabIndex = 6
         Me.bCfgEnviar.Text = "Enviar al cliente"
         Me.bCfgEnviar.UseVisualStyleBackColor = True
+        '
+        'lTaskMgr
+        '
+        Me.lTaskMgr.AutoSize = True
+        Me.lTaskMgr.Location = New System.Drawing.Point(3, 38)
+        Me.lTaskMgr.Name = "lTaskMgr"
+        Me.lTaskMgr.Padding = New System.Windows.Forms.Padding(0, 8, 4, 0)
+        Me.lTaskMgr.Size = New System.Drawing.Size(354, 21)
+        Me.lTaskMgr.TabIndex = 7
+        Me.lTaskMgr.Text = "Administrador de tareas (Requiere iniciar cliente.exe como administrador):"
+        '
+        'cboTaskMgr
+        '
+        Me.cboTaskMgr.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboTaskMgr.FormattingEnabled = True
+        Me.cboTaskMgr.Items.AddRange(New Object() {"Sin cambiar", "Bloquear", "Permitir"})
+        Me.cboTaskMgr.Location = New System.Drawing.Point(363, 41)
+        Me.cboTaskMgr.Name = "cboTaskMgr"
+        Me.cboTaskMgr.Size = New System.Drawing.Size(145, 21)
+        Me.cboTaskMgr.TabIndex = 8
+        '
+        'lAutostart
+        '
+        Me.lAutostart.AutoSize = True
+        Me.lAutostart.Location = New System.Drawing.Point(514, 38)
+        Me.lAutostart.Name = "lAutostart"
+        Me.lAutostart.Padding = New System.Windows.Forms.Padding(10, 8, 4, 0)
+        Me.lAutostart.Size = New System.Drawing.Size(117, 21)
+        Me.lAutostart.TabIndex = 9
+        Me.lAutostart.Text = "Inicio con Windows:"
+        '
+        'cboAutostart
+        '
+        Me.cboAutostart.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboAutostart.FormattingEnabled = True
+        Me.cboAutostart.Items.AddRange(New Object() {"Sin cambiar", "Activar", "Desactivar"})
+        Me.cboAutostart.Location = New System.Drawing.Point(637, 41)
+        Me.cboAutostart.Name = "cboAutostart"
+        Me.cboAutostart.Size = New System.Drawing.Size(125, 21)
+        Me.cboAutostart.TabIndex = 10
+        '
+        'chkPausarAlCerrar
+        '
+        Me.chkPausarAlCerrar.AutoSize = True
+        Me.chkPausarAlCerrar.Checked = True
+        Me.chkPausarAlCerrar.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkPausarAlCerrar.Location = New System.Drawing.Point(3, 68)
+        Me.chkPausarAlCerrar.Name = "chkPausarAlCerrar"
+        Me.chkPausarAlCerrar.Size = New System.Drawing.Size(173, 17)
+        Me.chkPausarAlCerrar.TabIndex = 11
+        Me.chkPausarAlCerrar.Text = "Pausar mesas al cerrar servidor"
+        Me.chkPausarAlCerrar.UseVisualStyleBackColor = True
         '
         'fCfg1
         '
@@ -624,6 +702,74 @@ Partial Class Dashboard
         Me.txtCfgCiber.Size = New System.Drawing.Size(170, 25)
         Me.txtCfgCiber.TabIndex = 5
         '
+        'grpFondo
+        '
+        Me.grpFondo.BackColor = System.Drawing.Color.White
+        Me.grpFondo.Controls.Add(Me.fFondo)
+        Me.grpFondo.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.grpFondo.Location = New System.Drawing.Point(0, 511)
+        Me.grpFondo.Name = "grpFondo"
+        Me.grpFondo.Size = New System.Drawing.Size(942, 64)
+        Me.grpFondo.TabIndex = 4
+        Me.grpFondo.TabStop = False
+        Me.grpFondo.Text = "Fondo de bloqueo (imagen JPG/PNG, se comprime y envía al cliente)"
+        '
+        'fFondo
+        '
+        Me.fFondo.BackColor = System.Drawing.Color.White
+        Me.fFondo.Controls.Add(Me.btnEnviarFondo)
+        Me.fFondo.Controls.Add(Me.lblFondoInfo)
+        Me.fFondo.Controls.Add(Me.cboFondoEq)
+        Me.fFondo.Controls.Add(Me.btnElegirFondo)
+        Me.fFondo.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.fFondo.Location = New System.Drawing.Point(3, 16)
+        Me.fFondo.Name = "fFondo"
+        Me.fFondo.Size = New System.Drawing.Size(936, 45)
+        Me.fFondo.TabIndex = 0
+        Me.fFondo.WrapContents = False
+        '
+        'btnEnviarFondo
+        '
+        Me.btnEnviarFondo.Font = New System.Drawing.Font("Segoe UI", 10.0!)
+        Me.btnEnviarFondo.Location = New System.Drawing.Point(3, 3)
+        Me.btnEnviarFondo.Name = "btnEnviarFondo"
+        Me.btnEnviarFondo.Size = New System.Drawing.Size(150, 32)
+        Me.btnEnviarFondo.TabIndex = 2
+        Me.btnEnviarFondo.Text = "Enviar fondo"
+        Me.btnEnviarFondo.UseVisualStyleBackColor = True
+        '
+        'lblFondoInfo
+        '
+        Me.lblFondoInfo.AutoSize = True
+        Me.lblFondoInfo.Font = New System.Drawing.Font("Segoe UI", 10.0!)
+        Me.lblFondoInfo.ForeColor = System.Drawing.Color.FromArgb(CType(CType(107, Byte), Integer), CType(CType(114, Byte), Integer), CType(CType(128, Byte), Integer))
+        Me.lblFondoInfo.Location = New System.Drawing.Point(159, 0)
+        Me.lblFondoInfo.Name = "lblFondoInfo"
+        Me.lblFondoInfo.Padding = New System.Windows.Forms.Padding(0, 8, 8, 0)
+        Me.lblFondoInfo.Size = New System.Drawing.Size(168, 27)
+        Me.lblFondoInfo.TabIndex = 1
+        Me.lblFondoInfo.Text = "Ninguna imagen elegida."
+        '
+        'cboFondoEq
+        '
+        Me.cboFondoEq.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboFondoEq.Font = New System.Drawing.Font("Segoe UI", 10.0!)
+        Me.cboFondoEq.FormattingEnabled = True
+        Me.cboFondoEq.Location = New System.Drawing.Point(333, 3)
+        Me.cboFondoEq.Name = "cboFondoEq"
+        Me.cboFondoEq.Size = New System.Drawing.Size(140, 25)
+        Me.cboFondoEq.TabIndex = 1
+        '
+        'btnElegirFondo
+        '
+        Me.btnElegirFondo.Font = New System.Drawing.Font("Segoe UI", 10.0!)
+        Me.btnElegirFondo.Location = New System.Drawing.Point(479, 3)
+        Me.btnElegirFondo.Name = "btnElegirFondo"
+        Me.btnElegirFondo.Size = New System.Drawing.Size(147, 32)
+        Me.btnElegirFondo.TabIndex = 0
+        Me.btnElegirFondo.Text = "Elegir imagen..."
+        Me.btnElegirFondo.UseVisualStyleBackColor = True
+        '
         'hintRed
         '
         Me.hintRed.Dock = System.Windows.Forms.DockStyle.Bottom
@@ -650,6 +796,8 @@ Partial Class Dashboard
         'wrapAcerca
         '
         Me.wrapAcerca.BackColor = System.Drawing.Color.White
+        Me.wrapAcerca.Controls.Add(Me.PictureBox1)
+        Me.wrapAcerca.Controls.Add(Me.fAcerca)
         Me.wrapAcerca.Controls.Add(Me.linkSitio)
         Me.wrapAcerca.Controls.Add(Me.gridAcerca)
         Me.wrapAcerca.Controls.Add(Me.lblDesc)
@@ -661,6 +809,52 @@ Partial Class Dashboard
         Me.wrapAcerca.Padding = New System.Windows.Forms.Padding(40)
         Me.wrapAcerca.Size = New System.Drawing.Size(942, 605)
         Me.wrapAcerca.TabIndex = 0
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
+        Me.PictureBox1.Location = New System.Drawing.Point(328, 458)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(287, 132)
+        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.PictureBox1.TabIndex = 6
+        Me.PictureBox1.TabStop = False
+        '
+        'fAcerca
+        '
+        Me.fAcerca.BackColor = System.Drawing.Color.White
+        Me.fAcerca.Controls.Add(Me.btnTerminos)
+        Me.fAcerca.Controls.Add(Me.btnBuscarUpd)
+        Me.fAcerca.Dock = System.Windows.Forms.DockStyle.Top
+        Me.fAcerca.Location = New System.Drawing.Point(40, 458)
+        Me.fAcerca.Name = "fAcerca"
+        Me.fAcerca.Size = New System.Drawing.Size(862, 44)
+        Me.fAcerca.TabIndex = 5
+        '
+        'btnTerminos
+        '
+        Me.btnTerminos.Dock = System.Windows.Forms.DockStyle.Left
+        Me.btnTerminos.Font = New System.Drawing.Font("Segoe UI", 10.0!)
+        Me.btnTerminos.Location = New System.Drawing.Point(3, 3)
+        Me.btnTerminos.Name = "btnTerminos"
+        Me.btnTerminos.Size = New System.Drawing.Size(170, 0)
+        Me.btnTerminos.TabIndex = 0
+        Me.btnTerminos.Text = "Términos de uso"
+        Me.btnTerminos.UseVisualStyleBackColor = True
+        '
+        'btnBuscarUpd
+        '
+        Me.btnBuscarUpd.Dock = System.Windows.Forms.DockStyle.Left
+        Me.btnBuscarUpd.Font = New System.Drawing.Font("Segoe UI", 10.0!)
+        Me.btnBuscarUpd.Location = New System.Drawing.Point(179, 3)
+        Me.btnBuscarUpd.Name = "btnBuscarUpd"
+        Me.btnBuscarUpd.Size = New System.Drawing.Size(220, 0)
+        Me.btnBuscarUpd.TabIndex = 1
+        Me.btnBuscarUpd.Text = "Buscar actualizaciones"
+        Me.btnBuscarUpd.UseVisualStyleBackColor = True
         '
         'linkSitio
         '
@@ -723,7 +917,7 @@ Partial Class Dashboard
         Me.av0.Name = "av0"
         Me.av0.Size = New System.Drawing.Size(686, 40)
         Me.av0.TabIndex = 1
-        Me.av0.Text = "3.0 (SQLite + UDP)"
+        Me.av0.Text = "3.2 (SQLite + UDP)"
         Me.av0.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'ak1
@@ -795,7 +989,7 @@ Partial Class Dashboard
         Me.av3.Name = "av3"
         Me.av3.Size = New System.Drawing.Size(686, 40)
         Me.av3.TabIndex = 7
-        Me.av3.Text = "KrDev"
+        Me.av3.Text = "KrDev - Christian Gamboa"
         Me.av3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'ak4
@@ -843,7 +1037,7 @@ Partial Class Dashboard
         Me.lblVer2.Name = "lblVer2"
         Me.lblVer2.Size = New System.Drawing.Size(862, 34)
         Me.lblVer2.TabIndex = 1
-        Me.lblVer2.Text = "Control de Ciber v3.0"
+        Me.lblVer2.Text = "Control de Ciber v3.2"
         '
         'lblBig
         '
@@ -988,6 +1182,7 @@ Partial Class Dashboard
         '
         Me.sumCaja.BackColor = System.Drawing.Color.White
         Me.sumCaja.Controls.Add(Me.btnCajaHoy)
+        Me.sumCaja.Controls.Add(Me.lblDesgloseHoy)
         Me.sumCaja.Controls.Add(Me.lblNTickets)
         Me.sumCaja.Controls.Add(Me.lblTotalHoy)
         Me.sumCaja.Dock = System.Windows.Forms.DockStyle.Top
@@ -1008,14 +1203,26 @@ Partial Class Dashboard
         Me.btnCajaHoy.Text = "Actualizar"
         Me.btnCajaHoy.UseVisualStyleBackColor = True
         '
+        'lblDesgloseHoy
+        '
+        Me.lblDesgloseHoy.Dock = System.Windows.Forms.DockStyle.Left
+        Me.lblDesgloseHoy.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.lblDesgloseHoy.ForeColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(41, Byte), Integer), CType(CType(55, Byte), Integer))
+        Me.lblDesgloseHoy.Location = New System.Drawing.Point(336, 16)
+        Me.lblDesgloseHoy.Name = "lblDesgloseHoy"
+        Me.lblDesgloseHoy.Size = New System.Drawing.Size(420, 58)
+        Me.lblDesgloseHoy.TabIndex = 3
+        Me.lblDesgloseHoy.Text = "Efectivo: $0.00 · Transferencia: $0.00" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Tarjeta: $0.00"
+        Me.lblDesgloseHoy.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
         'lblNTickets
         '
         Me.lblNTickets.Dock = System.Windows.Forms.DockStyle.Left
         Me.lblNTickets.Font = New System.Drawing.Font("Segoe UI", 12.0!)
         Me.lblNTickets.ForeColor = System.Drawing.Color.FromArgb(CType(CType(31, Byte), Integer), CType(CType(41, Byte), Integer), CType(CType(55, Byte), Integer))
-        Me.lblNTickets.Location = New System.Drawing.Point(336, 16)
+        Me.lblNTickets.Location = New System.Drawing.Point(236, 16)
         Me.lblNTickets.Name = "lblNTickets"
-        Me.lblNTickets.Size = New System.Drawing.Size(260, 58)
+        Me.lblNTickets.Size = New System.Drawing.Size(100, 58)
         Me.lblNTickets.TabIndex = 1
         Me.lblNTickets.Text = "Tickets: 0"
         Me.lblNTickets.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -1027,7 +1234,7 @@ Partial Class Dashboard
         Me.lblTotalHoy.ForeColor = System.Drawing.Color.FromArgb(CType(CType(39, Byte), Integer), CType(CType(174, Byte), Integer), CType(CType(96, Byte), Integer))
         Me.lblTotalHoy.Location = New System.Drawing.Point(16, 16)
         Me.lblTotalHoy.Name = "lblTotalHoy"
-        Me.lblTotalHoy.Size = New System.Drawing.Size(320, 58)
+        Me.lblTotalHoy.Size = New System.Drawing.Size(220, 58)
         Me.lblTotalHoy.TabIndex = 0
         Me.lblTotalHoy.Text = "Hoy: $0"
         Me.lblTotalHoy.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -1064,7 +1271,7 @@ Partial Class Dashboard
         Me.MinimumSize = New System.Drawing.Size(1000, 600)
         Me.Name = "Dashboard"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Control de Ciber v3.0"
+        Me.Text = "Control de Ciber v3.2"
         Me.side.ResumeLayout(False)
         Me.topBar.ResumeLayout(False)
         Me.topBar.PerformLayout()
@@ -1080,8 +1287,13 @@ Partial Class Dashboard
         CType(Me.numCfgPre, System.ComponentModel.ISupportInitialize).EndInit()
         Me.fCfg1.ResumeLayout(False)
         Me.fCfg1.PerformLayout()
+        Me.grpFondo.ResumeLayout(False)
+        Me.fFondo.ResumeLayout(False)
+        Me.fFondo.PerformLayout()
         Me.pageAcerca.ResumeLayout(False)
         Me.wrapAcerca.ResumeLayout(False)
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.fAcerca.ResumeLayout(False)
         Me.gridAcerca.ResumeLayout(False)
         Me.pageHist.ResumeLayout(False)
         Me.pageProductos.ResumeLayout(False)
@@ -1130,6 +1342,7 @@ Partial Class Dashboard
     Friend WithEvents sumCaja As Panel
     Friend WithEvents lblTotalHoy As Label
     Friend WithEvents lblNTickets As Label
+    Friend WithEvents lblDesgloseHoy As Label
     Friend WithEvents btnCajaHoy As Button
     Friend WithEvents splitCaja As SplitContainer
     Friend WithEvents gVentasHoy As GroupBox
@@ -1160,6 +1373,17 @@ Partial Class Dashboard
     Friend WithEvents lCfgPass As Label
     Friend WithEvents txtCfgPass As TextBox
     Friend WithEvents bCfgEnviar As Button
+    Friend WithEvents lTaskMgr As Label
+    Friend WithEvents cboTaskMgr As ComboBox
+    Friend WithEvents lAutostart As Label
+    Friend WithEvents cboAutostart As ComboBox
+    Friend WithEvents chkPausarAlCerrar As CheckBox
+    Friend WithEvents grpFondo As GroupBox
+    Friend WithEvents fFondo As FlowLayoutPanel
+    Friend WithEvents btnElegirFondo As Button
+    Friend WithEvents cboFondoEq As ComboBox
+    Friend WithEvents lblFondoInfo As Label
+    Friend WithEvents btnEnviarFondo As Button
     Friend WithEvents dgvRed As DataGridView
     Friend WithEvents hintRed As Label
     Friend WithEvents pageAcerca As Panel
@@ -1179,4 +1403,8 @@ Partial Class Dashboard
     Friend WithEvents ak4 As Label
     Friend WithEvents av4 As Label
     Friend WithEvents linkSitio As LinkLabel
+    Friend WithEvents fAcerca As FlowLayoutPanel
+    Friend WithEvents btnBuscarUpd As Button
+    Friend WithEvents btnTerminos As Button
+    Friend WithEvents PictureBox1 As PictureBox
 End Class

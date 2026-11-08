@@ -119,6 +119,7 @@
     </Compile>
     <Compile Include="Seguridad\Crypto.vb" />
     <Compile Include="Seguridad\ClienteCfg.vb" />
+    <Compile Include="Seguridad\TecladoBloqueo.vb" />
     <Compile Include="MotorCliente.vb" />
     <Compile Include="Arranque.vb" />
     <Compile Include="Mensaje.Designer.vb">
