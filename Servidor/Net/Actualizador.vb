@@ -8,7 +8,7 @@ Imports System.Text
 ''' </summary>
 Public Module Actualizador
     ' Versión de esta compilación (la fija el dueño).
-    Public Const VERSION_ACTUAL As String = "3.1"
+    Public Const VERSION_ACTUAL As String = "3.2"
     Public Const URL_VERSION As String = "https://raw.githubusercontent.com/KrDev0/updaters/refs/heads/main/ciber/ciber.json"
     Public Const URL_DESCARGA As String = "https://kr-dev.site/?app=ciber"
 
